@@ -22,4 +22,4 @@ Python script to automate the alignment of vector data to target, high-resolutio
 `docker build -t featureshift .`
 
 ## Run the Docker Image as a Container
-`docker run -v /my/data/images/:/mnt/images -v /my/data/vectors/:/mnt/vectors featureshift -i /mnt/vectors/input.shp -t /mnt/images/target.tif -o /mnt/vectors/output.shp -x 5`
+`docker run -v /my/data/images/:/mnt/images -v /my/data/vectors/:/mnt/vectors featureshift -i /mnt/vectors/input.shp -t /mnt/images/image_1.tif -o /mnt/vectors/output.shp -x 5`
