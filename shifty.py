@@ -29,11 +29,12 @@ def parse_args():
                         type    = str,
                         required = True)
 
-    parser.add_argument("-d", "--directory",
+    parser.add_argument("-t", "--target",
                         action  = "store",
-                        dest    = "imageDir",
-                        help    = "Single level directory containing target image/s (.jpg, .jp2, .tif). Image/s must be in a projected coordinate system.",
+                        dest    = "targets",
+                        help    = "List of target image/s (.jpg, .jp2, .tif). Image/s must be in a projected coordinate system.",
                         type    = str,
+                        nargs = '+',
                         required = True)
 
     parser.add_argument("-o", "--output",
@@ -426,8 +427,8 @@ class Tile(Image):
             
             
 class Shift(object):
-    def __init__(self, input_features, image_directory, output_features, search_distance=5, local_validation=None, global_validation=False):
-        self.image_dir = image_directory.rstrip("/")
+    def __init__(self, input_features, target_images, output_features, search_distance=5, local_validation=None, global_validation=False):
+        self.images = target_images
         self.in_feat = input_features
         self.out_feat = output_features
         self.search_distance = search_distance
@@ -444,7 +445,7 @@ class Shift(object):
         
         self._validate_output()
         
-        self._validate_directory()
+        self._validate_targets()
 
         self._validate_validation()
         
@@ -480,20 +481,14 @@ class Shift(object):
                 raise OSError( "Unable to open file: {0}".format(self.in_feat) )        
 
 
-    def _validate_directory(self):
-        """ Private method to validate image directory """
-        
-        if not os.path.isdir(self.image_dir):
-            raise OSError( "Image directory {0} is not a valid directory!".format(self.image_dir) )
+    def _validate_targets(self):
+        """ Private method to validate target images """
 
-        self.images = []
-
-        for i in os.listdir(self.image_dir):
+        for i in self.images:
             if i.lower().endswith((".tif", ".jpg", ".jp2")):
-                self.images.append(os.path.join(self.image_dir, i))
-
-        if not self.images:
-            raise OSError( "No images found for: {0}".format(self.image_dir) )
+                pass
+            else:
+                raise ValueError( "Incompatible file type for {}".format(i) )
         
         
     def _validate_output(self):
@@ -684,7 +679,7 @@ class Shift(object):
                 ds.Destroy()             
             
             else:
-                raise OSError( "No images found for: {0}".format(self.image_dir) )
+                raise OSError( "No images found!" )
             
         else:
             raise OSError( "{0} already exists!".format(output_index) )
@@ -917,8 +912,7 @@ class Shift(object):
             self.vrt = self.images[0]
         
         else:
-            self.vrt = os.path.join(self.workspace, 
-                                    "{0}.vrt".format(os.path.basename(self.image_dir)))
+            self.vrt = os.path.join(self.workspace, "temp.vrt")
             
             if not os.path.exists(self.vrt):
                 gdal.BuildVRT(self.vrt, self.images)
@@ -1379,6 +1373,6 @@ class Shift(object):
 if __name__ == "__main__":
     
     args = parse_args()
-    s = Shift(args.inputFeat, args.imageDir, args.outputFeat, args.distance, args.localVal, args.globalVal)    
+    s = Shift(args.inputFeat, args.targets, args.outputFeat, args.distance, args.localVal, args.globalVal)    
     s.prep_data()
     s.shift()
