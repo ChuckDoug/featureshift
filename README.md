@@ -2,10 +2,10 @@
 
 Python script to automate the alignment of vector data to target, high-resolution images.
 
-`python shifty.py -i /path/to/vectors.shp -d /directory/of/images/ -o /path/to/output.shp -x search_distance`
+`python shifty.py -i /path/to/vectors.shp -t /path/to/image_1.tif /path/to/image_2.tif -o /path/to/output.shp -x search_distance`
 
 **-i (required)**: *Path to input Featureclass (GDB) or shapefile (.shp).* <br>
-**-d (required)**: *Single level directory containing target image/s (.jpg, .jp2, .tif). Image/s must be in a projected coordinate system.* <br>
+**-t (required)**: *List of target image/s (.jpg, .jp2, .tif). Image/s must be in a projected coordinate system.* <br>
 **-o (required)**: *Path to output shapefile (.shp).* <br>
 **-x (optional)**: *Integer specifying the search distance in units associated with the target image/s. Default is 5 units.*  <br>
 **-lv (optional)**: *Integer specifying the number of nieghbors used for local validation. Value must be greater than or equal to 5.* <br>
@@ -22,4 +22,4 @@ Python script to automate the alignment of vector data to target, high-resolutio
 `docker build -t featureshift .`
 
 ## Run the Docker Image as a Container
-`docker run -v /my/data/images/:/mnt/images -v /my/data/vectors/:/mnt/vectors featureshift -i /mnt/vectors/input.shp -d /mnt/images/ -o /mnt/vectors/output.shp -x 5`
+`docker run -v /my/data/images/:/mnt/images -v /my/data/vectors/:/mnt/vectors featureshift -i /mnt/vectors/input.shp -t /mnt/images/target.tif -o /mnt/vectors/output.shp -x 5`
