@@ -15,7 +15,7 @@ Python script to automate the alignment of vector data to target, high-resolutio
 
 # Getting Started
 ## Clone the Repository
-`git clone git@code.ornl.gov:a4a/featureshift.git`
+`git@github.com:ChuckDoug/featureshift.git`
 
 ## Build the Docker Image
 `cd featureshift` <br>
