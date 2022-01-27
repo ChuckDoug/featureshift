@@ -15,11 +15,17 @@ Python script to automate the alignment of vector data to target, high-resolutio
 
 # Getting Started
 ## Clone the Repository
-`git@github.com:ChuckDoug/featureshift.git`
+```
+git clone git@github.com:ChuckDoug/featureshift.git
+```
 
 ## Build the Docker Image
-`cd featureshift` <br>
-`docker build -t featureshift .`
+```
+cd featureshift
+docker build -t featureshift .
+```
 
 ## Run the Docker Image as a Container
-`docker run -v /my/data/images/:/mnt/images -v /my/data/vectors/:/mnt/vectors featureshift -i /mnt/vectors/input.shp -t /mnt/images/image_1.tif -o /mnt/vectors/output.shp -x 5`
+```
+docker run -v /my/data/images/:/mnt/images -v /my/data/vectors/:/mnt/vectors featureshift -i /mnt/vectors/input.shp -t /mnt/images/image_1.tif -o /mnt/vectors/output.shp -x 5
+```
